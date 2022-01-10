@@ -32,7 +32,7 @@ class _mainstate extends State<MyApp>{
                 child: ElevatedButton(
                     onPressed: (){
                       setState(() {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>demo_for_all()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>login_page()));
                       });
                     },
                     child: Center(
