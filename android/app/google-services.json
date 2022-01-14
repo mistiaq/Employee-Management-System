@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "248740726896",
+    "project_id": "employee-management-hub",
+    "storage_bucket": "employee-management-hub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248740726896:android:d10b569de08f7ee9ea0cb5",
+        "android_client_info": {
+          "package_name": "com.istiaqosman.employee_mgt.employee_manegement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248740726896-l0mkj4s1b54lidrcdmsgolt2i97l30k2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq5K4_WqyvdqUOvvOHhgSZB6vyZh0-VkI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248740726896-l0mkj4s1b54lidrcdmsgolt2i97l30k2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
