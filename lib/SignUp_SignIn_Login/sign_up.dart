@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:employee_manegement/national/flutter_toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../demo4all.dart';
 
 class sign_up extends StatefulWidget {
 
@@ -10,7 +13,7 @@ class sign_up extends StatefulWidget {
 }
 
 class _sign_up_state extends State<sign_up> {
-
+  @override
   Future add_employee(a,b,c,d,e) async{
     CollectionReference collectionReference = FirebaseFirestore.instance.collection("Employee Table");
     Map<String, dynamic> data = <String, dynamic>{
@@ -19,24 +22,72 @@ class _sign_up_state extends State<sign_up> {
       "Email": c,
       "Contact Number": d,
       "Password":e,
+
     };
     Common_Toast().customtoast("Employee added");
-    collectionReference.doc().set(data).whenComplete(() =>
-        print('Post Added')).
-    catchError((onError)=>
-        print("Failed to add user: $onError"));
-  }
+    collectionReference.doc().set(data).whenComplete(() => print('Post Added')).catchError((onError)=>print("Failed to add user: $onError"));
 
+    try{
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(email: c, password: e);
+          Common_Toast().customtoast("Logged In Succesfully");
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
+        } on FirebaseAuthException catch(e){
+          if(e.code == "ERROR_USER_DISABLED")
+            Common_Toast().customtoast("The account with which the email is associated exists but has been disabled.");
+          else if(e.code == "ERROR_USER_NOT_FOUND")
+            Common_Toast().customtoast("No account could be found that matches the specified email address.");
+          else if(e.code == "ERROR_EMAIL_ALREADY_IN_USE ")
+            Common_Toast().customtoast("User is attempting to create a new account, or change the email address for an existing account that is already in use by another account. ");
+          else if(e.code == "FirebaseAuthWeakPasswordException")
+            Common_Toast().customtoast("the password specified during an account creation or password update operation is insufficiently strong.");
+        } catch (e){
+          print(e);
+          Common_Toast().customtoast(e.toString());
+        }
+      }
+    // await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //     email: c,
+    //     password: e
+    // );
+    // print("passed create");
+    // await FirebaseAuth.instance.signInWithEmailAndPassword(
+    //     email: c,
+    //     password: e
+    // );
+    // print("passed signin");
+    // Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
+    // Future login_user(String email, String password) async{
+    //   try{
+    //     await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+    //     Common_Toast().customtoast("Logged In Succesfully");
+    //     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
+    //   } on FirebaseAuthException catch(e){
+    //     if(e.code == "ERROR_USER_DISABLED")
+    //       Common_Toast().customtoast("The account with which the email is associated exists but has been disabled.");
+    //     else if(e.code == "ERROR_USER_NOT_FOUND")
+    //       Common_Toast().customtoast("No account could be found that matches the specified email address.");
+    //     else if(e.code == "ERROR_EMAIL_ALREADY_IN_USE ")
+    //       Common_Toast().customtoast("User is attempting to create a new account, or change the email address for an existing account that is already in use by another account. ");
+    //     else if(e.code == "FirebaseAuthWeakPasswordException")
+    //       Common_Toast().customtoast("the password specified during an account creation or password update operation is insufficiently strong.");
+    //   } catch (e){
+    //     print(e);
+    //     Common_Toast().customtoast(e.toString());
+    //   }
+    // }
 
+  //}
   TextEditingController f_name_controller = TextEditingController();
   TextEditingController l_name_controller = TextEditingController();
   TextEditingController email_controller = TextEditingController();
   TextEditingController contact_num_controller = TextEditingController();
-  TextEditingController verify_num_controller = TextEditingController();
   TextEditingController pass_controller = TextEditingController();
   TextEditingController confirm_pass_controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+
+
+    bool is_phoneverified = false;
     return Scaffold(
       body: Container(
         child: Padding(
@@ -87,44 +138,12 @@ class _sign_up_state extends State<sign_up> {
               SizedBox(
                 height: 10,
               ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 4,
-                    child:
-                    TextField(
-                      controller: contact_num_controller,
-                      decoration: const InputDecoration(
-                          icon: Icon(Icons.phone),
-                          labelText: "Contact Number",
-                          hintText: "e.g. +880 1*** ******",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          )
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(
-                    flex: 1,
-                      child: ElevatedButton(
-                        onPressed: (){},
-                        child: Text("Verify"),
-                      ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
               TextField(
-                controller: verify_num_controller,
+                controller: contact_num_controller,
                 decoration: const InputDecoration(
-                    icon: Icon(Icons.verified_rounded),
-                    labelText: "OTP",
-                    hintText: "*****",
+                    icon: Icon(Icons.phone),
+                    labelText: "Contact Number",
+                    hintText: "e.g. +880 1*** ******",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                     )
@@ -135,6 +154,7 @@ class _sign_up_state extends State<sign_up> {
               ),
               TextField(
                 controller: pass_controller,
+                obscureText: true,
                 decoration: const InputDecoration(
                     icon: Icon(Icons.password_rounded),
                     labelText: "Enter Password",
@@ -149,6 +169,7 @@ class _sign_up_state extends State<sign_up> {
               ),
               TextField(
                 controller: confirm_pass_controller,
+                obscureText: true,
                 decoration: const InputDecoration(
                     icon: Icon(Icons.password_rounded),
                     labelText: "Confirm Password",
@@ -160,6 +181,15 @@ class _sign_up_state extends State<sign_up> {
               ),
               SizedBox(
                 height: 10,
+              ),
+              ElevatedButton(
+                onPressed: (){
+                  // if(f_name_controller.toString().isEmpty && l_name_controller.toString().isEmpty && email_controller.toString().isEmpty && contact_num_controller.toString().isEmpty && pass_controller.toString().isEmpty && confirm_pass_controller.toString().isEmpty){
+                  //   Common_Toast().customtoast("Any field cannot be blank");}
+                  // else if(pass_controller!= confirm_pass_controller){ Common_Toast().customtoast("Password does not match");}
+                  //Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
+                  add_employee(f_name_controller.text, l_name_controller.text, email_controller.text, contact_num_controller.text, pass_controller.text);
+                },child: Text("Register"),
               ),
             ],
           ),

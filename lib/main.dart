@@ -1,8 +1,7 @@
+import 'package:employee_manegement/SignUp_SignIn_Login/employee_curved_nav.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'SignUp_SignIn_Login/login_page.dart';
-import 'SignUp_SignIn_Login/sign_up.dart';
-import 'demo4all.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,7 +56,7 @@ class _mainstate extends State<MyApp>{
                 child: ElevatedButton(
                     onPressed: (){
                       setState(() {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>sign_up()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>employee_curved_nav()));
                       });
                     },
                     child: Center(
