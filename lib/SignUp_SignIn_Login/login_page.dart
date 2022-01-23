@@ -1,4 +1,5 @@
 import 'package:employee_manegement/demo4all.dart';
+import 'package:employee_manegement/employee.dart/home.dart';
 import 'package:employee_manegement/national/flutter_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +15,7 @@ class _login_state extends State<login_page> {
     try{
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       Common_Toast().customtoast("Logged In Succesfully");
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> home()));
     } on FirebaseAuthException catch(e){
       if(e.code == "ERROR_USER_DISABLED")
         Common_Toast().customtoast("The account with which the email is associated exists but has been disabled.");

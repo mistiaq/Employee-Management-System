@@ -13,7 +13,6 @@ class sign_up extends StatefulWidget {
 }
 
 class _sign_up_state extends State<sign_up> {
-  @override
   Future add_employee(a,b,c,d,e) async{
     CollectionReference collectionReference = FirebaseFirestore.instance.collection("Employee Table");
     Map<String, dynamic> data = <String, dynamic>{
@@ -21,29 +20,37 @@ class _sign_up_state extends State<sign_up> {
       "Last Name": b,
       "Email": c,
       "Contact Number": d,
-      "Password":e,
-
+      "Password":e
     };
-    Common_Toast().customtoast("Employee added");
-    collectionReference.doc().set(data).whenComplete(() => print('Post Added')).catchError((onError)=>print("Failed to add user: $onError"));
-
     try{
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(email: c, password: e);
-          Common_Toast().customtoast("Logged In Succesfully");
-          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
-        } on FirebaseAuthException catch(e){
-          if(e.code == "ERROR_USER_DISABLED")
-            Common_Toast().customtoast("The account with which the email is associated exists but has been disabled.");
-          else if(e.code == "ERROR_USER_NOT_FOUND")
-            Common_Toast().customtoast("No account could be found that matches the specified email address.");
-          else if(e.code == "ERROR_EMAIL_ALREADY_IN_USE ")
-            Common_Toast().customtoast("User is attempting to create a new account, or change the email address for an existing account that is already in use by another account. ");
-          else if(e.code == "FirebaseAuthWeakPasswordException")
-            Common_Toast().customtoast("the password specified during an account creation or password update operation is insufficiently strong.");
-        } catch (e){
-          print(e);
-          Common_Toast().customtoast(e.toString());
-        }
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: c,
+          password: e
+      );
+      Common_Toast().customtoast("Logged In Successfully");
+      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
+    } on FirebaseAuthException catch(e){
+      if(e.code == "ERROR_USER_DISABLED") {
+        Common_Toast().customtoast("The account with which the email is associated exists but has been disabled.");
+      } else if(e.code == "ERROR_USER_NOT_FOUND") {
+        Common_Toast().customtoast("No account could be found that matches the specified email address.");
+      } else if(e.code == "ERROR_EMAIL_ALREADY_IN_USE ") {
+        Common_Toast().customtoast("User is attempting to create a new account, or change the email address for an existing account that is already in use by another account. ");
+      } else if(e.code == "FirebaseAuthWeakPasswordException") {
+        Common_Toast().customtoast("the password specified during an account creation or password update operation is insufficiently strong.");
+      }
+    } catch (e){
+      print(e);
+      Common_Toast().customtoast(e.toString());
+    }
+
+    Common_Toast().customtoast("Employee added");
+    collectionReference.doc().set(data).whenComplete(() =>
+        print('Post Added')).
+    catchError((onError)  =>
+        print("Failed to add user: $onError"));
+
+
       }
     // await FirebaseAuth.instance.createUserWithEmailAndPassword(
     //     email: c,
@@ -77,16 +84,14 @@ class _sign_up_state extends State<sign_up> {
     // }
 
   //}
-  TextEditingController f_name_controller = TextEditingController();
-  TextEditingController l_name_controller = TextEditingController();
-  TextEditingController email_controller = TextEditingController();
-  TextEditingController contact_num_controller = TextEditingController();
-  TextEditingController pass_controller = TextEditingController();
-  TextEditingController confirm_pass_controller = TextEditingController();
+  var f_name_controller = TextEditingController();
+  var l_name_controller = TextEditingController();
+  var email_controller = TextEditingController();
+  var contact_num_controller = TextEditingController();
+  var pass_controller = TextEditingController();
+  var confirm_pass_controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-
-
     bool is_phoneverified = false;
     return Scaffold(
       body: Container(
