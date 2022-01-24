@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.istiaqosman.employee_mgt.employee_manegement">
+
+    <uses-permission android:name="READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="Write_EXTERNAL_STORAGE"/>
    <application
+
         android:label="employee_manegement"
         android:icon="@mipmap/ic_launcher">
         <activity

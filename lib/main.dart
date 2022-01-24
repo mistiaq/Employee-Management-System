@@ -1,12 +1,16 @@
 import 'package:employee_manegement/SignUp_SignIn_Login/employee_curved_nav.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'SignUp_SignIn_Login/login_page.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: MyApp(),
