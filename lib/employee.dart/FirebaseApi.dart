@@ -15,30 +15,33 @@ class firebaseapi{
       return null;
     }
   }
-  static UploadTask? uploadBytes(String destination, Uint8List data) {
-    try {
-      final ref = FirebaseStorage.instance.ref(destination);
+  // static UploadTask? uploadBytes(String destination, Uint8List data) {
+  //   try {
+  //     final ref = FirebaseStorage.instance.ref(destination);
+  //
+  //     return ref.putData(data);
+  //   } on FirebaseException catch (e) {
+  //     print(e.message.toString());
+  //     return null;
+  //   }
+  // }
 
-      return ref.putData(data);
-    } on FirebaseException catch (e) {
-      print(e.message.toString());
-      return null;
-    }
-  }
-  Widget buildUploadStatus(UploadTask task) =>
-      StreamBuilder<TaskSnapshot>(
-      stream: task.snapshotEvents,
-      builder: (context, snapshot){
-        if(snapshot.hasData){
-          final snap = snapshot.data!;
-          final progress = snap.bytesTransferred / snap.totalBytes;
-          return Text('$progress %',
-            style: TextStyle(fontSize: 20,
-                fontWeight: FontWeight.bold),
-          );
-        }else{
-          return Container();
-        }
-      }
-  );
+
+
+  // Widget buildUploadStatus(UploadTask task) =>
+  //     StreamBuilder<TaskSnapshot>(
+  //     stream: task.snapshotEvents,
+  //     builder: (context, snapshot){
+  //       if(snapshot.hasData){
+  //         final snap = snapshot.data!;
+  //         final progress = snap.bytesTransferred / snap.totalBytes;
+  //         return Text('$progress %',
+  //           style: TextStyle(fontSize: 20,
+  //               fontWeight: FontWeight.bold),
+  //         );
+  //       }else{
+  //         return Container();
+  //       }
+  //     }
+  // );
 }
