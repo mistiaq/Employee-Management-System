@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:employee_manegement/employee.dart/home.dart';
+import 'package:employee_manegement/employee.dart/model.dart';
 import 'package:employee_manegement/national/flutter_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../demo4all.dart';
 
@@ -13,33 +16,39 @@ class sign_up extends StatefulWidget {
 }
 
 class _sign_up_state extends State<sign_up> {
-  Future add_employee(a,b,c,d,e) async{
-    CollectionReference collectionReference = FirebaseFirestore.instance.collection("Employee Table");
+  Future add_employee(a,b,c,d,e) async {
+    CollectionReference collectionReference = FirebaseFirestore.instance
+        .collection("Employee Table");
     Map<String, dynamic> data = <String, dynamic>{
       "First Name": a,
       "Last Name": b,
       "Email": c,
       "Contact Number": d,
-      "Password":e
+      "Password": e
     };
-    try{
+    try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: c,
           password: e
       );
       Common_Toast().customtoast("Logged In Successfully");
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
-    } on FirebaseAuthException catch(e){
-      if(e.code == "ERROR_USER_DISABLED") {
-        Common_Toast().customtoast("The account with which the email is associated exists but has been disabled.");
-      } else if(e.code == "ERROR_USER_NOT_FOUND") {
-        Common_Toast().customtoast("No account could be found that matches the specified email address.");
-      } else if(e.code == "ERROR_EMAIL_ALREADY_IN_USE ") {
-        Common_Toast().customtoast("User is attempting to create a new account, or change the email address for an existing account that is already in use by another account. ");
-      } else if(e.code == "FirebaseAuthWeakPasswordException") {
-        Common_Toast().customtoast("the password specified during an account creation or password update operation is insufficiently strong.");
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => demo_for_all()));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "ERROR_USER_DISABLED") {
+        Common_Toast().customtoast(
+            "The account with which the email is associated exists but has been disabled.");
+      } else if (e.code == "ERROR_USER_NOT_FOUND") {
+        Common_Toast().customtoast(
+            "No account could be found that matches the specified email address.");
+      } else if (e.code == "ERROR_EMAIL_ALREADY_IN_USE ") {
+        Common_Toast().customtoast(
+            "User is attempting to create a new account, or change the email address for an existing account that is already in use by another account. ");
+      } else if (e.code == "FirebaseAuthWeakPasswordException") {
+        Common_Toast().customtoast(
+            "the password specified during an account creation or password update operation is insufficiently strong.");
       }
-    } catch (e){
+    } catch (e) {
       print(e);
       Common_Toast().customtoast(e.toString());
     }
@@ -47,43 +56,9 @@ class _sign_up_state extends State<sign_up> {
     Common_Toast().customtoast("Employee added");
     collectionReference.doc().set(data).whenComplete(() =>
         print('Post Added')).
-    catchError((onError)  =>
+    catchError((onError) =>
         print("Failed to add user: $onError"));
-
-
-      }
-    // await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    //     email: c,
-    //     password: e
-    // );
-    // print("passed create");
-    // await FirebaseAuth.instance.signInWithEmailAndPassword(
-    //     email: c,
-    //     password: e
-    // );
-    // print("passed signin");
-    // Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
-    // Future login_user(String email, String password) async{
-    //   try{
-    //     await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-    //     Common_Toast().customtoast("Logged In Succesfully");
-    //     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
-    //   } on FirebaseAuthException catch(e){
-    //     if(e.code == "ERROR_USER_DISABLED")
-    //       Common_Toast().customtoast("The account with which the email is associated exists but has been disabled.");
-    //     else if(e.code == "ERROR_USER_NOT_FOUND")
-    //       Common_Toast().customtoast("No account could be found that matches the specified email address.");
-    //     else if(e.code == "ERROR_EMAIL_ALREADY_IN_USE ")
-    //       Common_Toast().customtoast("User is attempting to create a new account, or change the email address for an existing account that is already in use by another account. ");
-    //     else if(e.code == "FirebaseAuthWeakPasswordException")
-    //       Common_Toast().customtoast("the password specified during an account creation or password update operation is insufficiently strong.");
-    //   } catch (e){
-    //     print(e);
-    //     Common_Toast().customtoast(e.toString());
-    //   }
-    // }
-
-  //}
+  }
   var f_name_controller = TextEditingController();
   var l_name_controller = TextEditingController();
   var email_controller = TextEditingController();
@@ -92,7 +67,6 @@ class _sign_up_state extends State<sign_up> {
   var confirm_pass_controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    bool is_phoneverified = false;
     return Scaffold(
       body: Container(
         child: Padding(
@@ -189,10 +163,6 @@ class _sign_up_state extends State<sign_up> {
               ),
               ElevatedButton(
                 onPressed: (){
-                  // if(f_name_controller.toString().isEmpty && l_name_controller.toString().isEmpty && email_controller.toString().isEmpty && contact_num_controller.toString().isEmpty && pass_controller.toString().isEmpty && confirm_pass_controller.toString().isEmpty){
-                  //   Common_Toast().customtoast("Any field cannot be blank");}
-                  // else if(pass_controller!= confirm_pass_controller){ Common_Toast().customtoast("Password does not match");}
-                  //Navigator.of(context).push(MaterialPageRoute(builder: (context)=> demo_for_all()));
                   add_employee(f_name_controller.text, l_name_controller.text, email_controller.text, contact_num_controller.text, pass_controller.text);
                 },child: Text("Register"),
               ),
@@ -203,3 +173,4 @@ class _sign_up_state extends State<sign_up> {
     );
   }
 }
+

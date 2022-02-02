@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:employee_manegement/employee.dart/profile_emp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'dart:io';
 
 import '../main.dart';
 import 'dashboard_emp.dart';
+import 'model.dart';
 
 class customdrawer extends StatefulWidget {
 
@@ -17,6 +19,21 @@ class customdrawer extends StatefulWidget {
 
 
 class _customdrawerState extends State<customdrawer> {
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedinUser = UserModel();
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      this.loggedinUser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +45,7 @@ class _customdrawerState extends State<customdrawer> {
           ),
           ListTile(
             leading: Icon(Icons.account_box_rounded,color: Colors.blue,),
-            title: Text("JOE PARKARRR!!!" ,style: TextStyle(color: Colors.blue),),
+            title: Text("${loggedinUser.firstName} ${loggedinUser.secondName}" ,style: TextStyle(color: Colors.blue),),
           ),
           ListTile(
             leading: Icon(Icons.dashboard,color: Colors.blue,),
