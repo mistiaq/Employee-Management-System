@@ -28,7 +28,7 @@ class _profile_empState extends State<profile_emp> {
     super.initState();
     FirebaseFirestore.instance
         .collection("Employee Table")
-        .doc(user!.uid)
+        .doc(loggedinUser.uid)
         .get()
         .then((value) {
       this.loggedinUser = UserModel.fromMap(value.data());
@@ -54,7 +54,6 @@ class _profile_empState extends State<profile_emp> {
 
   @override
   Widget build(BuildContext context) {
-    final fileName = image != null ? basename(image!.path) : 'No file selected';
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -86,7 +85,7 @@ class _profile_empState extends State<profile_emp> {
               onPressed: () {
                 // selectfile;
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => showimages()));
+                    MaterialPageRoute(builder: (context) => showimages(userId: loggedinUser.uid)));
               },
               child: const Icon(Icons.camera_alt_outlined),
             ),
