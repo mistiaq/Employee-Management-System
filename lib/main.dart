@@ -61,8 +61,8 @@ class _mainstate extends State<MyApp>{
                 child: ElevatedButton(
                     onPressed: (){
                       setState(() {
-                        // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>employee_curved_nav()));
                         Navigator.of(context).push(MaterialPageRoute(builder: (context)=>employee_curved_nav()));
+                        // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>home()));
                       });
                     },
                     child: Center(

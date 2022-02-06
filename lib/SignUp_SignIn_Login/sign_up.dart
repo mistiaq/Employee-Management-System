@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:employee_manegement/SignUp_SignIn_Login/login_page.dart';
 import 'package:employee_manegement/employee.dart/customdrawer.dart';
 import 'package:employee_manegement/employee.dart/home.dart';
-import 'package:employee_manegement/employee.dart/model.dart';
+import 'package:employee_manegement/national/model.dart';
 import 'package:employee_manegement/national/flutter_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,22 +12,23 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../demo4all.dart';
 
 class sign_up extends StatefulWidget {
+  var userid;
   @override
   _sign_up_state createState() => _sign_up_state();
 }
 
 class _sign_up_state extends State<sign_up> {
+  var userid;
   Future add_employee(a, b, c, d, e) async {
     // User? firebaseUser = await FirebaseAuth.instance.currentUser;
-    CollectionReference collectionReference =
+    CollectionReference refs =
         FirebaseFirestore.instance.collection("Employee Table");
-    Map<String, dynamic> data = <String, dynamic>{
+    Map<String, dynamic> emp_data = <String, dynamic>{
       "First Name": a,
       "Last Name": b,
       "Email": c,
       "Contact Number": d,
-      "Password": e,
-      "uid": FirebaseFirestore.instance.collection("Employee Table").doc().id
+      "Password": e
     };
     try {
       await FirebaseAuth.instance
@@ -48,27 +49,26 @@ class _sign_up_state extends State<sign_up> {
       } else if (e.code == "FirebaseAuthWeakPasswordException") {
         Common_Toast().customtoast(
             "the password specified during an account creation or password update operation is insufficiently strong.");
-      }
-    } catch (e) {
-      print(e);
+      }} catch (e) {
       Common_Toast().customtoast(e.toString());
     }
-    collectionReference
-        .doc()
-        .set(data)
+    userid = FirebaseAuth.instance.currentUser!.uid.toString();
+    refs.doc(userid)
+        .set(emp_data)
         .whenComplete(() => print('Employee added'))
-        .catchError((onError) => print("Failed to add user: $onError"));
+        .catchError((onError) => Common_Toast().customtoast("Failed to add user: $onError"));
   }
-
-  var f_name_controller = TextEditingController();
-  var l_name_controller = TextEditingController();
-  var email_controller = TextEditingController();
-  var contact_num_controller = TextEditingController();
-  var pass_controller = TextEditingController();
-  var confirm_pass_controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+
+    TextEditingController f_name_controller = TextEditingController();
+    TextEditingController l_name_controller = TextEditingController();
+    TextEditingController email_controller = TextEditingController();
+    TextEditingController contact_num_controller = TextEditingController();
+    TextEditingController pass_controller = TextEditingController();
+    TextEditingController confirm_pass_controller = TextEditingController();
+
     return Scaffold(
       body: Container(
         child: Padding(

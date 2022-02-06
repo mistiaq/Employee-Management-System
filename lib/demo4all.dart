@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:employee_manegement/national/flutter_toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Firebasedemo extends StatefulWidget {
+  // String? userId = FirebaseFirestore.instance.doc("Employee Table").id;
+  String? userId;
   @override
   State<Firebasedemo> createState() => _FirebasedemoState();
 }
@@ -13,7 +18,7 @@ class _FirebasedemoState extends State<Firebasedemo> {
   loaddata() async {
     SharedPreferences preferences = await prefs;
     setState(() {
-      s = preferences.getInt("myvalue");
+      s = preferences.getInt("value");
     });
   }
 
@@ -28,14 +33,19 @@ class _FirebasedemoState extends State<Firebasedemo> {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot?> stream = FirebaseFirestore.instance.collection("day7").snapshots();
-    final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('users').snapshots();
-    final Stream<QuerySnapshot> _empTable = FirebaseFirestore.instance.collection('Employee Table').snapshots();
+    final Stream<QuerySnapshot?> stream =
+    FirebaseFirestore.instance.collection("Employee Table").snapshots();
+
+    final Stream<QuerySnapshot> _usersStream =
+    FirebaseFirestore.instance.collection('users').snapshots();
+
     TextEditingController usernameController = TextEditingController();
     TextEditingController ageController = TextEditingController();
     TextEditingController genderController = TextEditingController();
-    CollectionReference users = FirebaseFirestore.instance.collection("day7");
-    CollectionReference employees = FirebaseFirestore.instance.collection("Employee Table");
+
+    CollectionReference users = FirebaseFirestore.instance.collection("Employee Table");
+
+    userid = FirebaseAuth.instance.currentUser!.uid.toString();
     return WillPopScope(
       onWillPop: () async {
         final shd = await showDialog(
@@ -81,24 +91,13 @@ class _FirebasedemoState extends State<Firebasedemo> {
               ),
               Row(
                 children: [
-                  // OutlinedButton(
-                  //     onPressed: () {
-                  //       users.add({
-                  //         "name": usernameController.text,
-                  //         "age": ageController.text,
-                  //         "gender": genderController.text
-                  //       })
-                  //           .then((value) => Text("Successful"))
-                  //           .onError((error, stackTrace) => Text("${error}"));
-                  //     },
-                  //     child: Text("Send")),
                   OutlinedButton(
                       onPressed: () {
-                        employees.add({
+                        users.doc(userid).collection("extra info").add({
                           "name": usernameController.text,
                           "age": ageController.text,
                           "gender": genderController.text
-                        })
+                        }).whenComplete(() => Common_Toast().customtoast("Uploaded"))
                             .then((value) => Text("Successful"))
                             .onError((error, stackTrace) => Text("${error}"));
                       },
@@ -128,81 +127,89 @@ class _FirebasedemoState extends State<Firebasedemo> {
                       child: Text("Update")),
                 ],
               ),
-              StreamBuilder(
-                // stream: stream,
-                stream: _empTable,
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  }
-                  if (snapshot.hasError) {
-                    return Text("data is not found");
-                  }
-                  return Container(
-                    height: 350,
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              userid = snapshot.data!.docs[index].id;
-                              // Navigator.of(context).push(
-                              //     MaterialPageRoute(builder: (_) => M(userid)));
-                            },
-                            child: Card(
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    title:
-                                    Text(snapshot.data!.docs[index]["name"]),
-                                  ),
-                                  ListTile(
-                                    title:
-                                    Text(snapshot.data!.docs[index]["age"]),
-                                  ),
-                                  ListTile(
-                                    title: Text(
-                                        snapshot.data!.docs[index]["gender"]),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                    children: [
-                                      OutlinedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              userid = snapshot.data!.docs[index].id;
-                                            });
-
-                                            users.doc(userid).delete().then((value) => print("Succecful")).onError((error, stackTrace) => Text("$error"));
-                                          },
-                                          child: Text("Delete")),
-                                      OutlinedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                            userid =  snapshot.data!.docs[index].id;
-                                            });
-
-                                            usernameController.text = snapshot.data!.docs[index]["name"];
-                                            ageController.text =  snapshot.data!.docs[index]["age"];
-                                            genderController.text = snapshot.data!.docs[index]["gender"];
-                                          },
-                                          child: Text("Edit")),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              )
+              // StreamBuilder(
+              //   stream: stream,
+              //   builder: (BuildContext context,
+              //       AsyncSnapshot<QuerySnapshot?> snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return CircularProgressIndicator();
+              //     }
+              //     if (snapshot.hasError) {
+              //       return Text("data is not found");
+              //     }
+              //     return Container(
+              //       height: 350,
+              //       child: ListView.builder(
+              //         itemCount: snapshot.data!.docs.length,
+              //         itemBuilder: (context, index) {
+              //           // snapshot.data!.docs.forEach((e) {
+              //           //   userid = e.id;
+              //           // });
+              //
+              //           return Padding(
+              //             padding: const EdgeInsets.all(8.0),
+              //             child: InkWell(
+              //               onTap: () {
+              //                 userid = snapshot.data!.docs[index].id;
+              //                 // Navigator.of(context).push(
+              //                 //     MaterialPageRoute(builder: (_) => M(userid)));
+              //               },
+              //               child: Card(
+              //                 child: Column(
+              //                   children: [
+              //                     ListTile(
+              //                       title:
+              //                       Text(snapshot.data!.docs[index]["name"]),
+              //                     ),
+              //                     ListTile(
+              //                       title:
+              //                       Text(snapshot.data!.docs[index]["age"]),
+              //                     ),
+              //                     ListTile(
+              //                       title: Text(
+              //                           snapshot.data!.docs[index]["gender"]),
+              //                     ),
+              //                     Row(
+              //                       mainAxisAlignment:
+              //                       MainAxisAlignment.spaceAround,
+              //                       children: [
+              //                         OutlinedButton(
+              //                             onPressed: () {
+              //                               setState(() {
+              //                                 userid =
+              //                                     snapshot.data!.docs[index].id;
+              //                               });
+              //
+              //                               users.doc(userid).delete().then((value) => print("Succecful")).onError((error, stackTrace) => Text("$error"));
+              //                             },
+              //                             child: Text("Delete")),
+              //                         OutlinedButton(
+              //                             onPressed: () {
+              //                               // setState(() {
+              //                               userid =
+              //                                   snapshot.data!.docs[index].id;
+              //                               // });
+              //
+              //                               usernameController.text = snapshot
+              //                                   .data!.docs[index]["name"];
+              //                               ageController.text =
+              //                               snapshot.data!.docs[index]["age"];
+              //                               genderController.text = snapshot
+              //                                   .data!.docs[index]["gender"];
+              //                             },
+              //                             child: Text("Edit")),
+              //                       ],
+              //                     )
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //           );
+              //         },
+              //       ),
+              //     );
+              //   },
+              // )
             ],
           ),
         ),

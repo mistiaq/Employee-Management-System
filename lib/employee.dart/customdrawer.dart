@@ -11,7 +11,7 @@ import 'dart:io';
 import '../demo4all.dart';
 import '../main.dart';
 import 'dashboard_emp.dart';
-import 'model.dart';
+import '../national/model.dart';
 
 class customdrawer extends StatefulWidget {
   @override
@@ -21,6 +21,8 @@ class customdrawer extends StatefulWidget {
 class _customdrawerState extends State<customdrawer> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedinUser = UserModel();
+
+
 
   @override
   void initState() {
@@ -37,7 +39,10 @@ class _customdrawerState extends State<customdrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+   final _empTable =
+        FirebaseFirestore.instance.collection("Employee Table").doc(user!.uid).get();
+
+   return SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(
@@ -49,15 +54,22 @@ class _customdrawerState extends State<customdrawer> {
             margin: EdgeInsets.all(10),
             color: Colors.yellowAccent,
             elevation: 5,
-            child: ListTile(
-              leading: Icon(
-                Icons.account_box_rounded,
-                color: Colors.blue,
-              ),
-              title: Text(
-                "${loggedinUser.firstName} ${loggedinUser.secondName}",
-                style: TextStyle(color: Colors.blue),
-              ),
+            child: FutureBuilder(
+              future: _empTable,
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                return ListTile(
+                  leading: Icon(
+                    Icons.account_box_rounded,
+                    color: Colors.blue,
+                  ),
+                  title: Text(
+                    "${data["First Name"]}  ${data["Last Name"]}",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                );
+              }
             ),
           ),
           Card(

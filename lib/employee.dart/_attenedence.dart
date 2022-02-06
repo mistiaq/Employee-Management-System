@@ -19,7 +19,8 @@ class _attendenceState extends State<daily_attendence> {
         if (value != null) {
           final String x = value.format(context);
           return x;
-        } else
+        }
+        else
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text("Select Time First")));
       } on Exception catch (e) {
@@ -84,7 +85,7 @@ class _attendenceState extends State<daily_attendence> {
             SizedBox(
               height: 50,
             ),
-            Text(getText()),
+            // Text(getText()),
             SizedBox(
               height: 50,
             ),

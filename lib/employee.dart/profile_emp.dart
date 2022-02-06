@@ -7,12 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'FirebaseApi.dart';
 import 'dart:io';
-import 'package:path/path.dart';
-
 import 'imageupload/image_upload.dart';
-import 'model.dart';
+import '../national/model.dart';
 
 class profile_emp extends StatefulWidget {
   @override
@@ -20,7 +17,7 @@ class profile_emp extends StatefulWidget {
 }
 
 class _profile_empState extends State<profile_emp> {
-  User? user = FirebaseAuth.instance.currentUser;
+  // User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedinUser = UserModel();
 
   @override

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +14,7 @@ class imageupload extends StatefulWidget {
 class _imageuploadState extends State<imageupload> {
   File? _image;
   String? downloadURL;
+  var userid = FirebaseAuth.instance.currentUser!.uid.toString();
   final imagePicker = ImagePicker();
   Future imagePickermethod() async {
     final pick = await imagePicker.pickImage(source: ImageSource.gallery);
@@ -29,14 +31,14 @@ class _imageuploadState extends State<imageupload> {
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
     Reference ref = FirebaseStorage.instance
         .ref()
-        .child("${widget.userId}/images")
+        .child("${userid}/images")
         .child("post_$postID");
 
     await ref.putFile(_image!);
     downloadURL = await ref.getDownloadURL();
 
     await _firestore.collection("Employee Table")
-        .doc(widget.userId)
+        .doc(userid)
         .collection("images")
         .add({"downloadURL":downloadURL}).whenComplete(() =>
         showSnackBar(
