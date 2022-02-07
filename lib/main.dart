@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'SignUp_SignIn_Login/login_page.dart';
+import 'employee.dart/_attenedence.dart';
 import 'employee.dart/home.dart';
 
 void main() async{
@@ -62,7 +63,7 @@ class _mainstate extends State<MyApp>{
                     onPressed: (){
                       setState(() {
                         Navigator.of(context).push(MaterialPageRoute(builder: (context)=>employee_curved_nav()));
-                        // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>home()));
+                        // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>daily_attendence()));
                       });
                     },
                     child: Center(

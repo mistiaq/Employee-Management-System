@@ -52,11 +52,9 @@ class _homeState extends State<home> {
               builder: (BuildContext context,
                   AsyncSnapshot<DocumentSnapshot> snapshot) {
                 Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                } if (snapshot.hasError) {
-                  return Text("data is not found");
-                }
+                if (snapshot.connectionState == ConnectionState.waiting || snapshot.hasError) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
                   return Center(
                     child: Container(
                       height: 500,
@@ -64,11 +62,11 @@ class _homeState extends State<home> {
                         children: [
                           image != null
                               ? Image.file(
-                                  image!,
-                                  width: 160,
-                                  height: 160,
-                                  fit: BoxFit.cover,
-                                )
+                            image!,
+                            width: 160,
+                            height: 160,
+                            fit: BoxFit.cover,
+                          )
                               : FlutterLogo(size: 160),
                           Text(
                             uid,
@@ -79,7 +77,8 @@ class _homeState extends State<home> {
                           SizedBox(
                             height: 10,
                           ),
-                          Text(" My Full Name is : ${data["First Name"]}  ${data["Last Name"]}",
+                          Text(
+                              " My Full Name is : ${data["First Name"]}  ${data["Last Name"]}",
                               style: TextStyle(
                                 color: Colors.black54,
                                 fontWeight: FontWeight.w500,
@@ -107,6 +106,7 @@ class _homeState extends State<home> {
                       ),
                     ),
                   );
+                }
               },
             ),
             // FutureBuilder<DocumentSnapshot>(
