@@ -12,17 +12,22 @@ class daily_attendence extends StatefulWidget {
   @override
   _attendencestate createState() => _attendencestate();
 }
+
 class _attendencestate extends State<daily_attendence> {
-  Future uploadDateTime() async{
+  int i = 0;
+  Future uploadDateTime() async {
     final nows = DateFormat("dd-MM-yyyy").format(DateTime.now()).toString();
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    await _firestore.collection("Employee Table")
-    .doc(FirebaseAuth.instance.currentUser!.uid)
-    .collection("Daily Attendence")
-    .doc(nows.toString())
-    .set({"time": x, "date": y})
-    .whenComplete(() => showSnackBar("Uploaded", Duration(milliseconds: 400)));
+    await _firestore
+        .collection("Employee Table")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("Daily Attendence")
+        .doc(nows.toString())
+        .set({"time": x, "date": y}).whenComplete(
+            () => showSnackBar("Uploaded", Duration(milliseconds: 400)));
+    i++;
   }
+
   showSnackBar(String text, Duration d) {
     final snackText = SnackBar(
       content: Text(text),
@@ -30,12 +35,11 @@ class _attendencestate extends State<daily_attendence> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackText);
   }
-  String x = "";
-  String y = "";
+
+  String x = 'dd-mm-yyyy';
+  String y = '';
   @override
   Widget build(BuildContext context) {
-    TextEditingController _time = TextEditingController();
-    TextEditingController _date = TextEditingController();
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -68,6 +72,25 @@ class _attendencestate extends State<daily_attendence> {
               height: MediaQuery.of(context).size.height * 0.07,
               width: MediaQuery.of(context).size.width * 0.9,
               child: Card(
+                  elevation: 3,
+                  color: Colors.white,
+                  borderOnForeground: true,
+                  child: Center(
+                    child: Text(
+                      "Current Time: ${x}",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  )),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              margin: const EdgeInsets.all(15),
+              height: MediaQuery.of(context).size.height * 0.07,
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: Card(
                 elevation: 3,
                 child: ElevatedButton(
                   onPressed: () {
@@ -77,52 +100,45 @@ class _attendencestate extends State<daily_attendence> {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
             Container(
-              height: 400,
-              width: 400,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                          margin: EdgeInsets.only(top: 80),
-                          width: 200,
-                          height: 200,
-                          child: Text(
-                            "Current Time: \n\n${x}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          )),
-                      Container(
-                          padding: EdgeInsets.all(5),
-                          width: 200,
-                          height: 120,
-                          child: Text(
-                            "Today's Date: \n\n${y}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          )),
-                    ],
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      uploadDateTime();
-                      // Navigator.push(context, MaterialPageRoute(builder: (context)=> showSnackBar("uploaded", Duration(milliseconds: 400))));
-                    },
-                    child: const Text(
-                      "Upload",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 25),
-                    ),
-                  ),
-
-                ],
+              margin: const EdgeInsets.all(15),
+              height: MediaQuery.of(context).size.height * 0.07,
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: Card(
+                  elevation: 3,
+                  color: Colors.white,
+                  borderOnForeground: true,
+                  child: Center(
+                      child: Text(
+                    "Today's Date: ${y}",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ))),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (i == 0) {
+                  if (x != "" && y != "") {
+                    uploadDateTime();
+                  } else {
+                    showSnackBar(
+                        "Please Select Time and Date", Duration(milliseconds: 500));
+                  }
+                } else {
+                  showSnackBar(
+                      "You have submitted once", Duration(milliseconds: 500));
+                }
+              },
+              child: Text(
+                "Upload",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25),
               ),
-            )
+            ),
           ],
         ),
       ),

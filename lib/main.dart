@@ -1,10 +1,10 @@
 import 'package:employee_manegement/SignUp_SignIn_Login/employee_curved_nav.dart';
+import 'package:employee_manegement/employee.dart/_attenedence.dart';
+import 'package:employee_manegement/employee.dart/profile_emp.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'SignUp_SignIn_Login/login_page.dart';
-import 'employee.dart/_attenedence.dart';
-import 'employee.dart/home.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,8 +62,8 @@ class _mainstate extends State<MyApp>{
                 child: ElevatedButton(
                     onPressed: (){
                       setState(() {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>employee_curved_nav()));
-                        // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>daily_attendence()));
+                        // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>employee_curved_nav()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> profile_emp()));
                       });
                     },
                     child: Center(

@@ -5,17 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 class imageupload extends StatefulWidget {
   String? userId;
   imageupload({Key? key, this.userId}) : super(key: key);
   @override
   _imageuploadState createState() => _imageuploadState();
 }
+
 class _imageuploadState extends State<imageupload> {
+
   File? _image;
   String? downloadURL;
   var userid = FirebaseAuth.instance.currentUser!.uid.toString();
   final imagePicker = ImagePicker();
+
   Future imagePickermethod() async {
     final pick = await imagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
@@ -26,25 +30,26 @@ class _imageuploadState extends State<imageupload> {
       }
     });
   }
+
   Future uploadimagemethod() async {
     final postID = DateTime.now().millisecondsSinceEpoch.toString();
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
     Reference ref = FirebaseStorage.instance
         .ref()
-        .child("${userid}/images")
+        .child("$userid/images")
         .child("post_$postID");
 
     await ref.putFile(_image!);
     downloadURL = await ref.getDownloadURL();
 
-    await _firestore.collection("Employee Table")
+    await _firestore
+        .collection("Employee Table")
         .doc(userid)
         .collection("images")
-        .add({"downloadURL":downloadURL}).whenComplete(() =>
-        showSnackBar(
-            "Image Uploaded Successfully",
-            Duration(milliseconds: 500)));
+        .add({"downloadURL": downloadURL}).whenComplete(() => showSnackBar(
+            "Image Uploaded Successfully", Duration(milliseconds: 500)));
   }
+
   showSnackBar(String text, Duration d) {
     final snackText = SnackBar(
       content: Text(text),
@@ -52,6 +57,7 @@ class _imageuploadState extends State<imageupload> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackText);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
