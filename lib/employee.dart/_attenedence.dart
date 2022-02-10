@@ -36,7 +36,7 @@ class _attendencestate extends State<daily_attendence> {
     ScaffoldMessenger.of(context).showSnackBar(snackText);
   }
 
-  String x = 'dd-mm-yyyy';
+  String x = '';
   String y = '';
   @override
   Widget build(BuildContext context) {

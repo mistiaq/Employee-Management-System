@@ -20,6 +20,8 @@ class sign_up extends StatefulWidget {
 class _sign_up_state extends State<sign_up> {
   var userid;
   Future add_employee(a, b, c, d, e) async {
+    var downloadURL = "https://cdn3.iconfinder.com/data/icons/users-outline/60/50_-Blank_Profile-_user_people_group_team-512.png";
+
     // User? firebaseUser = await FirebaseAuth.instance.currentUser;
     CollectionReference refs =
         FirebaseFirestore.instance.collection("Employee Table");
@@ -28,7 +30,8 @@ class _sign_up_state extends State<sign_up> {
       "Last Name": b,
       "Email": c,
       "Contact Number": d,
-      "Password": e
+      "Password": e,
+      "Profile-pic": downloadURL,
     };
     try {
       await FirebaseAuth.instance

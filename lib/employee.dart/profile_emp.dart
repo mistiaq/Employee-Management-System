@@ -1,94 +1,122 @@
-import 'package:employee_manegement/employee.dart/imageupload/show_images.dart';
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:employee_manegement/employee.dart/profile_edit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'imageupload/image_upload.dart';
-import '../national/model.dart';
-
 class profile_emp extends StatefulWidget {
   @override
   _profile_empState createState() => _profile_empState();
 }
 
+
+// class FireStorageService extends ChangeNotifier{
+//   // FireStorageService._();
+//   FireStorageService();
+//
+//   // static Future<dynamic> loadFromStorage(BuildContext context, String image) async{
+//   //   return await FirebaseStorage
+//   //       .instance
+//   //       .ref()
+//   //       .child(FirebaseAuth.instance.currentUser!.uid)
+//   //       .child("profile-pic")
+//   //       .child(image)
+//   //       .getDownloadURL();
+//   //   // throw ("Platform not found");
+//   // }
+// }
 class _profile_empState extends State<profile_emp> {
-  // User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedinUser = UserModel();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   FirebaseFirestore.instance
-  //       .collection("Employee Table")
-  //       .doc(loggedinUser.uid)
-  //       .get()
-  //       .then((value) {
-  //     this.loggedinUser = UserModel.fromMap(value.data());
-  //     setState(() {});
+  // Future<Widget> _getImage(BuildContext context, String image) async{
+  //   Image image;
+  //   await FireStorageService.loadFromStorage(context, image).then((downloadURL){
+  //     image = Image.network(
+  //       downloadURL.toString(),
+  //       fit: BoxFit.scaleDown,
+  //     );
   //   });
+  //   return image;
   // }
-
-  UploadTask? task;
   File? image;
-
-  TextEditingController bio_controller =  TextEditingController();
-
-  Future pickImage(ImageSource source) async {
-    final image = await ImagePicker().pickImage(source: source);
-    try {
-      if (image == null) return;
-      final imageTemporary = File(image.path);
-      setState(() {
-        this.image = imageTemporary;
-      });
-    } on PlatformException catch (e) {
-      print("Failed to pick image: $e");
-    }
-  }
-
-  String img = 'assets/small-avatar.png';
-  // String img = 'assets/jpg_avatar.jpeg';
-
   @override
-  Widget build(BuildContext context) {
+  // Future<Widget> build(BuildContext context, AsyncSnapshot<dynamic> snapshot) async{
+  //   var downloadURL = "https://cdn3.iconfinder.com/data/icons/users-outline/60/50_-Blank_Profile-_user_people_group_team-512.png";
+  //   return FutureBuilder(
+  //     future: FirebaseStorage.instance.ref(FirebaseAuth.instance.currentUser!.uid).child("profile-pic").child("oa76BYeBMXZLdxKtpzR3").getDownloadURL(),
+  //       builder: (context, snapshot){
+  //       if(snapshot.connectionState == ConnectionState.done)
+  //         return Container(
+  //           height: MediaQuery.of(context).size.height /1.25,
+  //             width: MediaQuery.of(context).size.width/1.25,
+  //             child: Image.network(
+  //               snapshot.data .toString(),
+  //               fit: BoxFit.scaleDown,
+  //             ),
+  //         );
+  //       if(snapshot.connectionState == ConnectionState.waiting)
+  //         return Container(
+  //           height: MediaQuery.of(context).size.height /1.25,
+  //             width: MediaQuery.of(context).size.width/1.25,
+  //             child: CircularProgressIndicator(),
+  //         );
+  //         return Container();
+  //       },
+  //   );
+
+Widget build(BuildContext context){
+    final String uid = FirebaseAuth.instance.currentUser!.uid.toString();
+    final Future<DocumentSnapshot> _empTable =
+    FirebaseFirestore.instance.collection("Employee Table").doc(uid).get();
+
+    var downloadURL = "https://cdn3.iconfinder.com/data/icons/users-outline/60/50_-Blank_Profile-_user_people_group_team-512.png";
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Spacer(),
             const SizedBox(
               height: 10,
             ),
-            image != null
-                ? Center(
-                  child: Image.file(
-                      image!,
-                      width: 160,
-                      height: 160,
-                      fit: BoxFit.cover,
-                    ),
-                )
-                : Center(
-                  child: Container(
-                      height: 400,
-                      width: 400,
-                      // alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        color: Colors.grey,
-                        image: const DecorationImage(
-                          image: NetworkImage(
-                              "https://cdn3.iconfinder.com/data/icons/users-outline/60/50_-Blank_Profile-_user_people_group_team-512.png"),
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                        ),
-                      )),
-                ),
+
+            // Image.network(downloadURL),
+            // Image.network(downloadURL),
+            // StreamBuilder(
+            //     stream: _stream,
+            //     builder: (BuildContext context,
+            //         AsyncSnapshot<QuerySnapshot> snapshot) {
+            //       // String url = snapshot.data!.docs[index]['downloadURL'];
+            //
+
+            //       if (!snapshot.hasData) {
+            //         return Center(
+            //         child: Container(
+            //             height: 400,
+            //             width: 400,
+            //             // alignment: Alignment.center,
+            //             decoration: BoxDecoration(
+            //               border: Border.all(color: Colors.grey),
+            //               color: Colors.grey,
+            //               image: const DecorationImage(
+            //                 image: NetworkImage(
+            //                     "https://cdn3.iconfinder.com/data/icons/users-outline/60/50_-Blank_Profile-_user_people_group_team-512.png"),
+            //                 fit: BoxFit.cover,
+            //                 alignment: Alignment.center,
+            //               ),
+            //             )),
+            //       );
+            //       } else {
+            //         return Center(
+            //                   child: Image.network(
+            //                     url,
+            //                     width: 400,
+            //                     height: 400,
+            //                     fit: BoxFit.cover,
+            //                   ),
+            //                 );
+            //       }
+            //     }),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
             //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,87 +138,161 @@ class _profile_empState extends State<profile_emp> {
             //         onPressed: () {}, child: Icon(Icons.upload_rounded))
             //   ],
             // ),
-            Container(
-              margin: EdgeInsets.all(10),
-              height: 100,
-                width: 400,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-              ),
-              child: Column(
-                children: [
-                  const Text('\nMohammad Istiaq Uddin', style: TextStyle(fontSize: 20)),
-                  const Text('\nSoftware Developer, Flutter\n'),
-                ],
-              ),
+
+            FutureBuilder(
+              future: _empTable,
+              builder: (BuildContext context,
+              AsyncSnapshot<DocumentSnapshot> snapshot){
+                Map <String, dynamic> data = snapshot.data!.data() as Map <String, dynamic>;
+                if(snapshot.connectionState == ConnectionState.waiting || snapshot.hasError)
+                  return Center(child: CircularProgressIndicator());
+                else{
+                  final String x = "${data["profile-pic"]}";
+                  return Column(
+                    children: [
+                      x != null
+                      ? Container( alignment: Alignment.topCenter,height: 500, width: MediaQuery.of(context).size.width,child: Image.network(x, fit: BoxFit.cover,))
+                      : Image.network(downloadURL),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        height: 100,
+                        width: 400,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                                "\n${data["First Name"]} ${data["Last Name"]}",
+                                style: TextStyle(
+                                    fontSize: 20
+                                )),
+                            Text('\n${data["Designation"]}\n'),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        height: 40,
+                        width: 400,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Row(
+                          children:  [
+                            Text('  Bio: ${data["Bio"]}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                )),
+                            // TextField(
+                            //   controller: bio_controller,
+                            //     decoration: InputDecoration(
+                            //       hintText: 'Ex: Learner',
+                            //     ),
+                            // )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.all(10),
+                        height: 100,
+                        width: 400,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Text('\n  LinkedIn Profile: ${data["LinkedIn"]}',
+                                    style: TextStyle(fontSize: 14))),
+                            Expanded(
+                                flex: 1,
+                                child: Text('  Github Profile: ${data["Github"]}',
+                                    style: TextStyle(fontSize: 14))),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              }
             ),
-            Container(
-              margin: EdgeInsets.all(10),
-              height: 40,
-                width: 400,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-              ),
-              child: Row(
-                children: const [
-                  Text('  Bio: ', style: TextStyle(fontSize: 18,)),
-                  // TextField(
-                  //   controller: bio_controller,
-                  //     decoration: InputDecoration(
-                  //       hintText: 'Ex: Learner',
-                  //     ),
-                  // )
-                ],
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.all(10),
-              height: 100,
-              width: 400,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Expanded(flex: 1,child: Text('\n  LinkedIn Profile: ', style: TextStyle(fontSize: 15))),
-                  Expanded(flex: 1,child: Text('\n  Github Profile: ', style: TextStyle(fontSize: 15))),
-                ],
-              ),
-            ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //             builder: (context) =>
-            //                 imageupload(userId: loggedinUser.uid)));
-            //   },
-            //   child: const Icon(Icons.cloud_upload_outlined),
+            // Container(
+            //   margin: EdgeInsets.all(10),
+            //   height: 100,
+            //   width: 400,
+            //   decoration: BoxDecoration(
+            //     border: Border.all(color: Colors.black),
+            //   ),
+            //   child: Column(
+            //     children: const [
+            //       Text('\nMohammad Istiaq Uddin',
+            //           style: TextStyle(fontSize: 20)),
+            //       Text('\nSoftware Developer, Flutter\n'),
+            //     ],
+            //   ),
             // ),
-            // SizedBox(
-            //   height: 10,
+            // Container(
+            //   margin: EdgeInsets.all(10),
+            //   height: 40,
+            //   width: 400,
+            //   decoration: BoxDecoration(
+            //     border: Border.all(color: Colors.black),
+            //   ),
+            //   child: Row(
+            //     children: const [
+            //       Text('  Bio: ',
+            //           style: TextStyle(
+            //             fontSize: 18,
+            //           )),
+            //       // TextField(
+            //       //   controller: bio_controller,
+            //       //     decoration: InputDecoration(
+            //       //       hintText: 'Ex: Learner',
+            //       //     ),
+            //       // )
+            //     ],
+            //   ),
             // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     // selectfile;
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //             builder: (context) =>
-            //                 showimages(userId: loggedinUser.uid)));
-            //   },
-            //   child: const Icon(Icons.camera_alt_outlined),
+            // Container(
+            //   alignment: Alignment.centerLeft,
+            //   margin: EdgeInsets.all(10),
+            //   height: 100,
+            //   width: 400,
+            //   decoration: BoxDecoration(
+            //     border: Border.all(color: Colors.black),
+            //   ),
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: const [
+            //       Expanded(
+            //           flex: 1,
+            //           child: Text('\n  LinkedIn Profile: ',
+            //               style: TextStyle(fontSize: 15))),
+            //       Expanded(
+            //           flex: 1,
+            //           child: Text('\n  Github Profile: ',
+            //               style: TextStyle(fontSize: 15))),
+            //     ],
+            //   ),
             // ),
-            // SizedBox(
-            //   height: 10,
-            // ),
-          ElevatedButton(onPressed: (){}, child:Text("Edit Profile"))
+            SizedBox(),
+            //this is Edit Profile Button
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => profile_edit()));
+                },
+                child: Text("Edit Profile"))
           ],
         ),
       ),
     );
   }
+  // loadButton(context),
 }

@@ -4,11 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class showimages extends StatefulWidget {
-  String? userId;
+  // String? userId;
 
-  showimages({Key? key, this.userId}) : super(key: key);
-
-  @override
   _showimagesState createState() => _showimagesState();
 }
 
@@ -24,7 +21,8 @@ class _showimagesState extends State<showimages> {
             .doc(userid)
             .collection("images")
             .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return (const Center(
               child: Text("No image uploaded"),
