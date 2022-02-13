@@ -23,6 +23,9 @@ class nav_state extends State<employee_curved_nav>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      // home: Animated,
+
+
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.white,
           color: Colors.teal,

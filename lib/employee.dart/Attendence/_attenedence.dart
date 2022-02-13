@@ -6,13 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import 'home.dart';
-
+import '../Home/home.dart';
 class daily_attendence extends StatefulWidget {
   @override
   _attendencestate createState() => _attendencestate();
 }
-
 class _attendencestate extends State<daily_attendence> {
   int i = 0;
   Future uploadDateTime() async {
@@ -27,7 +25,6 @@ class _attendencestate extends State<daily_attendence> {
             () => showSnackBar("Uploaded", Duration(milliseconds: 400)));
     i++;
   }
-
   showSnackBar(String text, Duration d) {
     final snackText = SnackBar(
       content: Text(text),
@@ -35,7 +32,6 @@ class _attendencestate extends State<daily_attendence> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackText);
   }
-
   String x = '';
   String y = '';
   @override
@@ -114,7 +110,7 @@ class _attendencestate extends State<daily_attendence> {
                   child: Center(
                       child: Text(
                     "Today's Date: ${y}",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ))),
             ),
             const SizedBox(
@@ -127,14 +123,14 @@ class _attendencestate extends State<daily_attendence> {
                     uploadDateTime();
                   } else {
                     showSnackBar(
-                        "Please Select Time and Date", Duration(milliseconds: 500));
+                        "Please Select Time and Date", const Duration(milliseconds: 500));
                   }
                 } else {
                   showSnackBar(
-                      "You have submitted once", Duration(milliseconds: 500));
+                      "You have submitted once", const Duration(milliseconds: 500));
                 }
               },
-              child: Text(
+              child: const Text(
                 "Upload",
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25),
               ),
@@ -154,12 +150,7 @@ class _attendencestate extends State<daily_attendence> {
       ).then((TimeOfDay? value) {
         if (value != null) {
           x = value.format(context).toString();
-          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => getvalue(value.format(context).toString())));
-          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value.format(context))));
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("There is something wrong!!!")));
-        }
+          }
       });
     });
   }
@@ -176,11 +167,6 @@ class _attendencestate extends State<daily_attendence> {
           final DateFormat formatter = DateFormat('dd-MM-yyyy');
           final String formatted = formatter.format(value);
           y = formatted;
-          // ScaffoldMessenger.of(context)
-          //     .showSnackBar(SnackBar(content: Text(formatted)));
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("There is something wrong!!!")));
         }
       });
     });

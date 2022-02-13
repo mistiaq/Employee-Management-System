@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:employee_manegement/employee.dart/profile_emp.dart';
-import 'package:employee_manegement/employee.dart/_attenedence.dart';
+import 'package:employee_manegement/Settings/settings.dart';
+import 'package:employee_manegement/Task%20Management/task_manager.dart';
+import 'package:employee_manegement/employee.dart/Profile/profile_emp.dart';
+import 'package:employee_manegement/employee.dart/Attendence/_attenedence.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -114,6 +116,28 @@ class _customdrawerState extends State<customdrawer> {
             elevation: 5,
             child: ListTile(
               leading: Icon(
+                Icons.fingerprint_rounded,
+                color: Colors.blue,
+              ),
+              title: Text(
+                "Tasks",
+                style: TextStyle(color: Colors.blue),
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => task_manager()));
+              },
+            ),
+          ),
+          Card(
+            borderOnForeground: true,
+            shadowColor: Colors.red,
+            margin: EdgeInsets.all(10),
+            color: Colors.yellowAccent,
+            elevation: 5,
+            child: ListTile(
+              leading: Icon(
                 Icons.account_circle_outlined,
                 color: Colors.blue,
               ),
@@ -124,6 +148,27 @@ class _customdrawerState extends State<customdrawer> {
               onTap: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => profile_emp()));
+              },
+            ),
+          ),
+          Card(
+            borderOnForeground: true,
+            shadowColor: Colors.red,
+            margin: EdgeInsets.all(10),
+            color: Colors.yellowAccent,
+            elevation: 5,
+            child: ListTile(
+              leading: Icon(
+                Icons.account_circle_outlined,
+                color: Colors.blue,
+              ),
+              title: Text(
+                "Settings",
+                style: TextStyle(color: Colors.blue),
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => settings()));
               },
             ),
           ),

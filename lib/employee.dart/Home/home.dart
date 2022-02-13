@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'customdrawer.dart';
+import '../customdrawer.dart';
 
 class home extends StatefulWidget {
   @override
@@ -16,12 +16,12 @@ class _homeState extends State<home> {
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 
   final String uid = FirebaseAuth.instance.currentUser!.uid.toString();
-  loaddata() async {
-    SharedPreferences preferences = await prefs;
-    setState(() {
-      s = preferences.getInt("value");
-    });
-  }
+  // loaddata() async {
+  //   SharedPreferences preferences = await prefs;
+  //   setState(() {
+  //     s = preferences.getInt("value");
+  //   });
+  // }
 
   var userid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -30,7 +30,7 @@ class _homeState extends State<home> {
   @override
   void initState() {
     super.initState();
-    loaddata();
+    // loaddata();
   }
 
   @override
@@ -52,9 +52,7 @@ class _homeState extends State<home> {
               builder: (BuildContext context,
                   AsyncSnapshot<DocumentSnapshot> snapshot) {
                 Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-                if (snapshot.connectionState == ConnectionState.waiting || snapshot.hasError) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
+                if (snapshot.connectionState == ConnectionState.done) {
                   return Center(
                     child: Container(
                       height: 500,
@@ -106,6 +104,8 @@ class _homeState extends State<home> {
                       ),
                     ),
                   );
+                } else {
+                  return Center(child: CircularProgressIndicator());
                 }
               },
             ),

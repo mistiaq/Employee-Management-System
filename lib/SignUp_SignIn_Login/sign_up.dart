@@ -1,15 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:employee_manegement/SignUp_SignIn_Login/login_page.dart';
-import 'package:employee_manegement/employee.dart/customdrawer.dart';
-import 'package:employee_manegement/employee.dart/home.dart';
-import 'package:employee_manegement/national/model.dart';
 import 'package:employee_manegement/national/flutter_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
-import '../demo4all.dart';
 
 class sign_up extends StatefulWidget {
   var userid;
@@ -31,35 +25,35 @@ class _sign_up_state extends State<sign_up> {
       "Email": c,
       "Contact Number": d,
       "Password": e,
-      "Profile-pic": downloadURL,
+      "profile-pic":downloadURL,
     };
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: c, password: e);
-      Common_Toast().customtoast("Please Log In");
+      Common_Toast().customtoast("Please Log In", Duration(milliseconds: 400));
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => login_page()));
     } on FirebaseAuthException catch (e) {
       if (e.code == "ERROR_USER_DISABLED") {
         Common_Toast().customtoast(
-            "The account with which the email is associated exists but has been disabled.");
+            "The account with which the email is associated exists but has been disabled.", Duration(milliseconds: 400));
       } else if (e.code == "ERROR_USER_NOT_FOUND") {
         Common_Toast().customtoast(
-            "No account could be found that matches the specified email address.");
+            "No account could be found that matches the specified email address.", Duration(milliseconds: 400));
       } else if (e.code == "ERROR_EMAIL_ALREADY_IN_USE ") {
         Common_Toast().customtoast(
-            "User is attempting to create a new account, or change the email address for an existing account that is already in use by another account. ");
+            "User is attempting to create a new account, or change the email address for an existing account that is already in use by another account. ", Duration(milliseconds: 400));
       } else if (e.code == "FirebaseAuthWeakPasswordException") {
         Common_Toast().customtoast(
-            "the password specified during an account creation or password update operation is insufficiently strong.");
+            "the password specified during an account creation or password update operation is insufficiently strong.", Duration(milliseconds: 400));
       }} catch (e) {
-      Common_Toast().customtoast(e.toString());
+      Common_Toast().customtoast(e.toString(), Duration(milliseconds: 400));
     }
     userid = FirebaseAuth.instance.currentUser!.uid.toString();
     refs.doc(userid)
         .set(emp_data)
         .whenComplete(() => print('Employee added'))
-        .catchError((onError) => Common_Toast().customtoast("Failed to add user: $onError"));
+        .catchError((onError) => Common_Toast().customtoast("Failed to add user: $onError", Duration(milliseconds: 400)));
   }
 
   @override
@@ -134,8 +128,8 @@ class _sign_up_state extends State<sign_up> {
               ),
               TextField(
                 controller: pass_controller,
-                obscureText: true,
-                decoration: const InputDecoration(
+                // obscureText: true,
+                decoration: InputDecoration(
                     icon: Icon(Icons.password_rounded),
                     labelText: "Enter Password",
                     hintText: "********",
@@ -148,7 +142,8 @@ class _sign_up_state extends State<sign_up> {
               ),
               TextField(
                 controller: confirm_pass_controller,
-                obscureText: true,
+                // obscureText: true,
+                // obscureText: true,
                 decoration: const InputDecoration(
                     icon: Icon(Icons.password_rounded),
                     labelText: "Confirm Password",
