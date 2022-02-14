@@ -42,12 +42,12 @@ class _profile_editState extends State<profile_edit> {
     await ref.putFile(_image!);
     downloadURL = await ref.getDownloadURL();
 
-    await _firestore
-        .collection("Employee Table")
-        .doc(userid)
-        .collection("profile-pic")
-        .add({"downloadURL": downloadURL}).whenComplete(() => showSnackBar(
-            "Image Uploaded Successfully", Duration(milliseconds: 500)));
+    // await _firestore
+    //     .collection("Employee Table")
+    //     .doc(userid)
+    //     .collection("profile-pic")
+    //     .add({"downloadURL": downloadURL}).whenComplete(() => showSnackBar(
+    //         "Image Uploaded Successfully", Duration(milliseconds: 500)));
 
     await _firestore.collection("Employee Table").doc(userid).update({"profile-pic":downloadURL});
   }

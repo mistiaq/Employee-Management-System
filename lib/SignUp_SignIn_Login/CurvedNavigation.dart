@@ -1,5 +1,5 @@
-import 'package:employee_manegement/SignUp_SignIn_Login/login_page.dart';
-import 'package:employee_manegement/SignUp_SignIn_Login/sign_up.dart';
+import 'package:employee_manegement/SignUp_SignIn_Login/LoginPage.dart';
+import 'package:employee_manegement/SignUp_SignIn_Login/SignUp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';

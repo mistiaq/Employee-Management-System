@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:employee_manegement/Settings/settings.dart';
-import 'package:employee_manegement/Task%20Management/task_manager.dart';
-import 'package:employee_manegement/employee.dart/Profile/profile_emp.dart';
-import 'package:employee_manegement/employee.dart/Attendence/_attenedence.dart';
+import 'package:employee_manegement/Task%20Management/TaskManager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../demo4all.dart';
+import '../DemoCrud.dart';
 import '../main.dart';
+import 'Attendence/Attendence.dart';
+import 'Profile/EmployeeProfile.dart';
 
 class customdrawer extends StatefulWidget {
   @override

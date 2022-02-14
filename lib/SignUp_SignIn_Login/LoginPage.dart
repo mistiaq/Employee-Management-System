@@ -1,6 +1,5 @@
-import 'package:employee_manegement/SignUp_SignIn_Login/sign_up.dart';
-import 'package:employee_manegement/Task%20Management/task_manager.dart';
-import 'package:employee_manegement/employee.dart/Home/home.dart';
+import 'package:employee_manegement/Employee/Home/Home.dart';
+import 'package:employee_manegement/SignUp_SignIn_Login/SignUp.dart';
 import 'package:employee_manegement/national/flutter_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

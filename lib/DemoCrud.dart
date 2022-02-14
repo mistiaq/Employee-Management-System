@@ -137,83 +137,80 @@ class _FirebasedemoState extends State<Firebasedemo> {
                 stream: stream,
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  }
-                  if (snapshot.hasError) {
-                    return Text("data is not found");
-                  }
-                  return Container(
-                    height: 350,
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              userid = snapshot.data!.docs[index].id;
-                            },
-                            child: Card(
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    title: Text(
-                                        snapshot.data!.docs[index]["name"]),
-                                  ),
-                                  ListTile(
-                                    title: Text(
-                                        snapshot.data!.docs[index]["age"]),
-                                  ),
-                                  ListTile(
-                                    title: Text(
-                                        snapshot.data!.docs[index]["gender"]),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      OutlinedButton(
-                                          onPressed: () {
-                                            setState(() {
+                  if (snapshot.connectionState == ConnectionState.done || snapshot.hasData) {
+                    return Container(
+                      height: 350,
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                userid = snapshot.data!.docs[index].id;
+                              },
+                              child: Card(
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      title: Text(
+                                          snapshot.data!.docs[index]["name"]),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                          snapshot.data!.docs[index]["age"]),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                          snapshot.data!.docs[index]["gender"]),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                      children: [
+                                        OutlinedButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                userid =
+                                                    snapshot.data!.docs[index].id;
+                                              });
+
+                                              users
+                                                  .doc(userid)
+                                                  .delete()
+                                                  .then((value) =>
+                                                  print("Succecful"))
+                                                  .onError((error, stackTrace) =>
+                                                  Text("$error"));
+                                            },
+                                            child: Text("Delete")),
+                                        OutlinedButton(
+                                            onPressed: () {
                                               userid =
                                                   snapshot.data!.docs[index].id;
-                                            });
 
-                                            users
-                                                .doc(userid)
-                                                .delete()
-                                                .then((value) =>
-                                                    print("Succecful"))
-                                                .onError((error, stackTrace) =>
-                                                    Text("$error"));
-                                          },
-                                          child: Text("Delete")),
-                                      OutlinedButton(
-                                          onPressed: () {
-                                            // setState(() {
-                                            userid =
-                                                snapshot.data!.docs[index].id;
-                                            // });
-
-                                            usernameController.text = snapshot
-                                                .data!.docs[index]["name"];
-                                            ageController.text = snapshot
-                                                .data!.docs[index]["age"];
-                                            genderController.text = snapshot
-                                                .data!.docs[index]["gender"];
-                                          },
-                                          child: Text("Edit")),
-                                    ],
-                                  )
-                                ],
+                                              usernameController.text = snapshot
+                                                  .data!.docs[index]["name"];
+                                              ageController.text = snapshot
+                                                  .data!.docs[index]["age"];
+                                              genderController.text = snapshot
+                                                  .data!.docs[index]["gender"];
+                                            },
+                                            child: Text("Edit")),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  else {
+                    return CircularProgressIndicator();
+                  }
                 },
               )
             ],

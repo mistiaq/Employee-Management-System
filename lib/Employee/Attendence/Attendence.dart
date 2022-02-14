@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import '../Home/home.dart';
+import '../Home/Home.dart';
 class daily_attendence extends StatefulWidget {
   @override
   _attendencestate createState() => _attendencestate();
