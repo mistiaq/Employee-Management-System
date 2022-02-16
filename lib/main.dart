@@ -27,10 +27,15 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
  class SplashScreen extends StatefulWidget{
   @override
    _splashState createState() => _splashState();
 }
+
+
+
 class _splashState extends State<SplashScreen>{
   @override
   void initState(){
@@ -56,6 +61,7 @@ class _splashState extends State<SplashScreen>{
   void openOnBoard(){
     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> login_page()));
   }
+
 }
 
 

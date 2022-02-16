@@ -17,7 +17,7 @@ class _aboutState extends State<about> {
       body: Container(
         child: Column(
           children: [
-            Image.asset("assets/images/logo.jpg"),
+            Image.asset("assets/images/profile.jpeg"),
             SizedBox(height: 10),
             Text("Mohammad Istiaq Uddin", style: TextStyle(fontSize: 20)),
             SizedBox(height: 10),
@@ -46,7 +46,7 @@ class _aboutState extends State<about> {
     );
   }
   _launchURL() async {
-    const url = 'www.github.com/IstiaqOsman';
+    const url = 'https://github.com/IstiaqOsman';
     if (await canLaunch(url)) {
       await launch(url);
     } else {

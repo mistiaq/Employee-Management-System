@@ -37,7 +37,7 @@ class _profile_empState extends State<profile_emp> {
                   return Column(
                     children: [
                       x != null
-                      ? Container( alignment: Alignment.topCenter,height: 500, width: MediaQuery.of(context).size.width,child: Image.network(x, fit: BoxFit.cover,))
+                      ? Container( alignment: Alignment.topCenter,height: 500, width: 500,child: Image.network(x, fit: BoxFit.cover,))
                       : Image.network(downloadURL),
                       Container(
                         margin: EdgeInsets.all(10),

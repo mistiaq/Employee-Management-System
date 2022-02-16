@@ -11,6 +11,7 @@ class login_page extends StatefulWidget{
 }
 
 class _login_state extends State<login_page> {
+
   Future login_user(String email, String password) async{
     try{
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
@@ -48,7 +49,7 @@ class _login_state extends State<login_page> {
               TextField(
                 obscureText: true,
                 controller: password_controller,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   icon: Icon(Icons.password),
                   labelText: "Enter Password",
                   hintText: "********",
@@ -61,7 +62,7 @@ class _login_state extends State<login_page> {
                 mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment:CrossAxisAlignment.center,
                 children: [
-                  Text("Dont have an account?"),
+                  Text("Don't have an account?"),
                   TextButton(
                     onPressed: (){
                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=> sign_up()));

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:employee_manegement/Task%20Management/ShowTasks.dart';
-import 'package:employee_manegement/Task%20Management/WriteTask.dart';
-import 'package:employee_manegement/DemoCrud.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'ShowTasks.dart';
+import 'WriteTask.dart';
 
 class task_manager extends StatefulWidget {
   const task_manager({Key? key}) : super(key: key);
@@ -82,7 +82,7 @@ class _task_managerState extends State<task_manager> {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => write_task()));
                 },
-                child: Icon(Icons.add),
+                child: Icon(Icons.note_add_outlined),
               ),
             ),
           ],
